@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  web:
+    image: animal-crossing-graphql
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - .:/app
+    ports: 
+      - "8080:8080"
+
