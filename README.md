@@ -29,7 +29,41 @@ query {
 }
 ```
 
-In this example, I'm querying for the name, catch-phrase, and birthday of all of the Cranky Cat and Frog villagers.
+In this example, I'm querying for the name, catch-phrase, and birthday of all of the Cranky Cat and Frog villagers. Here are the results:
+
+```json
+{
+  "data": {
+    "villagers": [
+      {
+        "name": "Kabuki",
+        "catchPhrase": "meooo-OH",
+        "birthday": "November 29"
+      },
+      {
+        "name": "Tom",
+        "catchPhrase": "me-YOWZA",
+        "birthday": "December 10"
+      },
+      {
+        "name": "Camofrog",
+        "catchPhrase": "ten-hut",
+        "birthday": "June 5"
+      },
+      {
+        "name": "WartJr.",
+        "catchPhrase": "grr-ribbit",
+        "birthday": "August 21"
+      },
+      {
+        "name": "Croque",
+        "catchPhrase": "asif",
+        "birthday": "July 18"
+      }
+    ]
+  }
+}
+```
 
 ## Contribution
 
