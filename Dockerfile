@@ -11,9 +11,9 @@ CMD ["npm", "run", "start:watch"]
 # Build and Run Tests
 FROM node:lts-alpine as builder
 
-WORKDIR /app
+COPY --from=development /app /app
 
-COPY --from=development . .
+WORKDIR /app
 
 RUN npm run build
 

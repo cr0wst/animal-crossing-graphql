@@ -1,9 +1,22 @@
-import express from 'express'
+import { ApolloServer } from 'apollo-server'
+import 'reflect-metadata'
+import { buildSchema } from 'type-graphql'
+import { VillagerResolver } from './villager/VillagerResolver'
+import { container } from './container'
 
-const PORT = process.env.PORT || 8080
+async function main(): Promise<void> {
+    const schema = await buildSchema({
+        resolvers: [VillagerResolver],
+        container: container,
+        emitSchemaFile: true,
+        validate: false,
+    })
 
-const app = express()
+    const server = new ApolloServer({ schema })
+    const { url } = await server.listen(process.env.PORT || 3000)
+    console.log(url)
+}
 
-app.listen(PORT, () => {
-    console.log(`Server started on ${PORT}`)
+main().catch((err) => {
+    console.error(err)
 })
