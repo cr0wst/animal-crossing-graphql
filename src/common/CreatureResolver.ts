@@ -47,7 +47,9 @@ export abstract class CreatureResolver {
         @Root() creature: Creature,
         @Arg('shop', () => Shop, { nullable: true, description: 'The shop to display results for.' }) shop: Shop,
     ): Promise<Price[]> {
-        const filtered = creature.prices.filter((price) => price.shop === shop)
+        let filtered = creature.prices
+
+        filtered = filtered.filter((price) => shop === undefined || price.shop === shop)
 
         return filtered
     }

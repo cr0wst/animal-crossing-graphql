@@ -5,10 +5,11 @@ import { VillagerResolver } from './villager/VillagerResolver'
 import { container } from './container'
 import { BugResolver } from './bug/BugResolver'
 import { AvailabilityResolver } from './common/AvailabilityResolver'
+import { FishResolver } from './fish/FishResolver'
 
 async function main(): Promise<void> {
     const schema = await buildSchema({
-        resolvers: [VillagerResolver, BugResolver, AvailabilityResolver],
+        resolvers: [VillagerResolver, BugResolver, AvailabilityResolver, FishResolver],
         container: container,
         emitSchemaFile: true,
         validate: false,

@@ -4,6 +4,8 @@ import { VillagerDataSource } from './villager/VillagerDataSource'
 import { BugResolver } from './bug/BugResolver'
 import { BugDataSource } from './bug/BugDataSource'
 import { AvailabilityResolver } from './common/AvailabilityResolver'
+import { FishResolver } from './fish/FishResolver'
+import { FishDataSource } from './fish/FishDataSource'
 
 export const container = new Container()
 
@@ -12,7 +14,9 @@ export const container = new Container()
 container.bind<VillagerResolver>(VillagerResolver).toSelf().inSingletonScope()
 container.bind<BugResolver>(BugResolver).toSelf().inSingletonScope()
 container.bind<AvailabilityResolver>(AvailabilityResolver).toSelf().inSingletonScope()
+container.bind<FishResolver>(FishResolver).toSelf().inSingletonScope()
 
 // Services
-container.bind<VillagerDataSource>(VillagerDataSource).toSelf().inSingletonScope
-container.bind<BugDataSource>(BugDataSource).toSelf().inSingletonScope
+container.bind<VillagerDataSource>(VillagerDataSource).toSelf().inSingletonScope()
+container.bind<BugDataSource>(BugDataSource).toSelf().inSingletonScope()
+container.bind<FishDataSource>(FishDataSource).toSelf().inSingletonScope()
