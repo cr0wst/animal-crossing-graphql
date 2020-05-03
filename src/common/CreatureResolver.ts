@@ -18,6 +18,8 @@ export class AvailabilityArgs {
     months: Month[]
     @Field(() => Hemisphere, { nullable: true })
     hemisphere: Hemisphere
+    @Field({ nullable: true })
+    availableAllYear: boolean
 }
 
 @InputType()
@@ -27,20 +29,24 @@ export class PriceArgs {
 
     @Field(() => Int, { nullable: true })
     max: number
+
+    @Field(() => Shop, { nullable: true })
+    shop: Shop
 }
 
 @Resolver(() => Creature)
 @injectable()
 export abstract class CreatureResolver {
     @FieldResolver(() => [Price])
-    prices(@Root() creature: Creature, @Arg('shop', () => Shop, { nullable: true }) shop: Shop): Price[] {
-        let filtered = creature.prices
-        if (shop !== undefined) {
-            filtered = filtered.filter((price) => price.shop === shop)
-        }
+    async prices(
+        @Root() creature: Creature,
+        @Arg('shop', () => Shop, { nullable: true, description: 'The shop to display results for.' }) shop: Shop,
+    ): Promise<Price[]> {
+        const filtered = creature.prices.filter((price) => price.shop === shop)
 
         return filtered
     }
+
     protected filter(creatures: Creature[], price: PriceArgs, availability: AvailabilityArgs): Creature[] {
         let results = creatures
         if (availability !== undefined) {
@@ -53,6 +59,7 @@ export abstract class CreatureResolver {
 
         return results
     }
+
     protected filterExpiring(creatures: Creature[], month: Month, hemisphere: Hemisphere): Creature[] {
         return creatures.filter((creature) => {
             const monthAvailable = creature.availability.months.find((month) => {
@@ -77,6 +84,12 @@ export abstract class CreatureResolver {
             })
         }
 
+        if (availability.availableAllYear !== undefined) {
+            filtered = filtered.filter((result) => {
+                return result.availability.isAllYear == availability.availableAllYear
+            })
+        }
+
         if (availability.locations) {
             filtered = filtered.filter((result) => {
                 return availability.locations.includes(result.availability.location)
@@ -96,23 +109,12 @@ export abstract class CreatureResolver {
                 }
                 return (
                     result.availability.months.filter((month) => {
-                        if (availability.hemisphere === undefined) {
-                            return (
-                                // Available in any of the months
-                                availability.months.filter((availability) =>
-                                    this.isMonthBetween(availability, month.start, month.end),
-                                ).length > 0
-                            )
-                        } else {
-                            return (
-                                // Same Hemisphere
-                                month.hemisphere === availability.hemisphere &&
-                                // Available in any of the months
-                                availability.months.filter((availability) =>
-                                    this.isMonthBetween(availability, month.start, month.end),
-                                ).length
-                            )
-                        }
+                        return (
+                            (availability.hemisphere === undefined || availability.hemisphere === month.hemisphere) &&
+                            availability.months.filter((availability) =>
+                                this.isMonthBetween(availability, month.start, month.end),
+                            ).length
+                        )
                     }).length > 0
                 )
             })
@@ -128,7 +130,10 @@ export abstract class CreatureResolver {
             filtered = filtered.filter((result) => {
                 return (
                     result.prices.find((price) => {
-                        return price.price >= priceArg.min
+                        if (priceArg.shop === undefined || priceArg.shop === price.shop) {
+                            return price.price >= priceArg.min
+                        }
+                        return false
                     }) !== undefined
                 )
             })
@@ -138,7 +143,10 @@ export abstract class CreatureResolver {
             filtered = filtered.filter((result) => {
                 return (
                     result.prices.find((price) => {
-                        return price.price <= priceArg.max
+                        if (priceArg.shop === undefined || priceArg.shop === price.shop) {
+                            return price.price <= priceArg.max
+                        }
+                        return false
                     }) !== undefined
                 )
             })
