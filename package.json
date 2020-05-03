@@ -8,7 +8,7 @@
     "test": "jest",
     "build": "tsc --sourceMap false",
     "lint": "eslint -c '.eslintrc.js' 'src/**/*.{js,ts,tsx}' 'test/**/*.{js,ts,tsx}' --quiet --fix",
-    "start:watch": "tsc-watch --onSuccess 'npm start'"
+    "start:watch": "ts-node-dev --respawn --transpileOnly src/app.ts"
   },
   "keywords": [],
   "author": "Steve Crow <steve@smcrow.net>",
@@ -24,6 +24,7 @@
     "prettier": "^2.0.5",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.9.1",
+    "ts-node-dev": "^1.0.0-pre.44",
     "tsc-watch": "^4.2.3",
     "typescript": "^3.8.3"
   },
