@@ -6,6 +6,7 @@ import { Month } from './enums/Month'
 import { AvailableMonth } from './AvailableMonth'
 import { Hemisphere } from './enums/Hemisphere'
 import { Shop } from './enums/Shop'
+import { CacheableDataSource } from './CacheableDataSource'
 
 const API_URL = 'http://acnhapi.com/'
 
@@ -36,22 +37,10 @@ export interface CreatureData {
 }
 
 @injectable()
-export abstract class CreatureDataSource<R extends CreatureResponse, D extends CreatureData> {
-    async getAll(): Promise<D[]> {
-        const response = await axios.get(API_URL + this.getEndpoint())
-
-        // ACNH API returns an object of key-value pairs instead of an array.
-        return Object.values(response.data).map((response: R) => {
-            return this.transformResponse(response)
-        })
-    }
-
-    async get(id: number): Promise<D> {
-        const response = await axios.get(`${API_URL + this.getEndpoint()}/${id}`)
-
-        return this.transformResponse(response.data)
-    }
-
+export abstract class CreatureDataSource<
+    R extends CreatureResponse,
+    D extends CreatureData
+> extends CacheableDataSource<R, D> {
     protected buildBaseCreatureData(creature: CreatureResponse): CreatureData {
         return {
             id: creature.id,

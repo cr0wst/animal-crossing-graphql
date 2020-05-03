@@ -25,7 +25,7 @@ export class VillagerResolver {
 
     @Query(() => [Villager], { description: 'Query for a list of villagers.' })
     async villagers(@Args() { personality, species, gender }: GetVillagerArgs): Promise<Villager[]> {
-        let results = await this.villagerDataSource.getAllVillagers()
+        let results = await this.villagerDataSource.getAll()
 
         if (personality) {
             results = results.filter((villager) => {
@@ -50,6 +50,6 @@ export class VillagerResolver {
     async villager(
         @Arg('id', () => Int, { nullable: false, description: 'The id of the villager.' }) id: number,
     ): Promise<Villager> {
-        return await this.villagerDataSource.getVillager(id)
+        return await this.villagerDataSource.get(id)
     }
 }
