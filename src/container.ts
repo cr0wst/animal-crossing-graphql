@@ -3,7 +3,7 @@ import { VillagerResolver } from './villager/VillagerResolver'
 import { VillagerDataSource } from './villager/VillagerDataSource'
 import { BugResolver } from './bug/BugResolver'
 import { BugDataSource } from './bug/BugDataSource'
-import { AvailabilityResolver } from './common/AvailabilityResolver'
+import { AvailabilityResolver } from './availability/AvailabilityResolver'
 import { FishResolver } from './fish/FishResolver'
 import { FishDataSource } from './fish/FishDataSource'
 

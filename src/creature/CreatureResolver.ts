@@ -1,10 +1,10 @@
 import { Int, Field, InputType, FieldResolver, Root, Arg, Resolver } from 'type-graphql'
 import { injectable } from 'inversify'
-import { Hemisphere } from '../common/enums/Hemisphere'
-import { Month } from '../common/enums/Month'
+import { Hemisphere } from '../availability/Hemisphere'
+import { Month } from '../availability/Month'
 import Creature from './Creature'
 import { Price } from './Price'
-import { Shop } from './enums/Shop'
+import { Shop } from './Shop'
 
 @InputType()
 export class AvailabilityArgs {

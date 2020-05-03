@@ -4,7 +4,7 @@ import { buildSchema } from 'type-graphql'
 import { VillagerResolver } from './villager/VillagerResolver'
 import { container } from './container'
 import { BugResolver } from './bug/BugResolver'
-import { AvailabilityResolver } from './common/AvailabilityResolver'
+import { AvailabilityResolver } from './availability/AvailabilityResolver'
 import { FishResolver } from './fish/FishResolver'
 
 async function main(): Promise<void> {

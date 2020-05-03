@@ -1,12 +1,12 @@
 import { injectable } from 'inversify'
 import axios from 'axios'
-import { Availability } from './Availability'
+import { Availability } from '../availability/Availability'
 import { Price } from './Price'
-import { Month } from './enums/Month'
-import { AvailableMonth } from './AvailableMonth'
-import { Hemisphere } from './enums/Hemisphere'
-import { Shop } from './enums/Shop'
-import { CacheableDataSource } from './CacheableDataSource'
+import { Month } from '../availability/Month'
+import { AvailableMonth } from '../availability/AvailableMonth'
+import { Hemisphere } from '../availability/Hemisphere'
+import { Shop } from './Shop'
+import { CacheableDataSource } from '../common/CacheableDataSource'
 
 const API_URL = 'http://acnhapi.com/'
 

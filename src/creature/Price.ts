@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from 'type-graphql'
-import { Shop } from './enums/Shop'
+import { Shop } from './Shop'
 
 @ObjectType({ description: 'How much an object sells for.' })
 export class Price {

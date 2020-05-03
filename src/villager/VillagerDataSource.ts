@@ -1,6 +1,6 @@
-import { Personality } from '../common/enums/Personality'
-import { Species } from '../common/enums/Species'
-import { Gender } from '../common/enums/Gender'
+import { Personality } from './Personality'
+import { Species } from './Species'
+import { Gender } from './Gender'
 import { injectable } from 'inversify'
 import { CacheableDataSource } from '../common/CacheableDataSource'
 

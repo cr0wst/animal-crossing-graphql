@@ -1,8 +1,8 @@
 import { Resolver, Query, Int, Arg, ArgsType, Field, Args } from 'type-graphql'
 import { injectable } from 'inversify'
-import { Hemisphere } from '../common/enums/Hemisphere'
-import { Month } from '../common/enums/Month'
-import { CreatureResolver, AvailabilityArgs, PriceArgs } from '../common/CreatureResolver'
+import { Hemisphere } from '../availability/Hemisphere'
+import { Month } from '../availability/Month'
+import { CreatureResolver, AvailabilityArgs, PriceArgs } from '../creature/CreatureResolver'
 import Fish from './Fish'
 import { FishDataSource } from './FishDataSource'
 

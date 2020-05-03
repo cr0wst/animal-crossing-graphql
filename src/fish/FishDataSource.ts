@@ -1,6 +1,6 @@
 import { injectable } from 'inversify'
-import { Shop } from '../common/enums/Shop'
-import { CreatureDataSource, CreatureResponse, CreatureData } from '../common/CreatureDataSource'
+import { Shop } from '../creature/Shop'
+import { CreatureDataSource, CreatureResponse, CreatureData } from '../creature/CreatureDataSource'
 
 interface FishResponse extends CreatureResponse {
     'price-cj': number

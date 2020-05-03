@@ -1,6 +1,6 @@
 import { Field, ObjectType, ID } from 'type-graphql'
-import { Availability } from '../common/Availability'
-import { Price } from '../common/Price'
+import { Availability } from '../availability/Availability'
+import { Price } from './Price'
 
 @ObjectType({ description: 'An Animal Crossing creature.' })
 export default class Creature {

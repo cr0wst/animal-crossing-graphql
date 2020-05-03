@@ -1,8 +1,8 @@
 import { Resolver, Arg, FieldResolver, Root } from 'type-graphql'
 import { injectable } from 'inversify'
-import { Hemisphere } from '../availability/Hemisphere'
-import { AvailableMonth } from '../availability/AvailableMonth'
-import { Availability } from '../availability/Availability'
+import { Hemisphere } from './Hemisphere'
+import { AvailableMonth } from './AvailableMonth'
+import { Availability } from './Availability'
 
 @Resolver(() => Availability)
 @injectable()

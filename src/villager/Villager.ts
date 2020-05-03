@@ -1,8 +1,8 @@
 import { Field, ObjectType, ID } from 'type-graphql'
-import { Personality } from '../common/enums/Personality'
-import { Species } from '../common/enums/Species'
-import { Gender } from '../common/enums/Gender'
-import { BirthdayScalar } from '../common/scalars/Birthday'
+import { Personality } from './Personality'
+import { Species } from './Species'
+import { Gender } from './Gender'
+import { BirthdayScalar } from './Birthday'
 
 @ObjectType({ description: 'An Animal Crossing villager.' })
 export default class Villager {

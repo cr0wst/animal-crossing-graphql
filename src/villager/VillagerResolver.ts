@@ -1,8 +1,8 @@
 import { Resolver, Query, ArgsType, Field, Args, Int, Arg } from 'type-graphql'
 import Villager from './Villager'
-import { Personality } from '../common/enums/Personality'
-import { Gender } from '../common/enums/Gender'
-import { Species } from '../common/enums/Species'
+import { Personality } from './Personality'
+import { Gender } from './Gender'
+import { Species } from './Species'
 import { VillagerDataSource } from './VillagerDataSource'
 import { injectable } from 'inversify'
 

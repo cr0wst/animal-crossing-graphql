@@ -1,6 +1,6 @@
 import { ObjectType, Field } from 'type-graphql'
-import { Hemisphere } from '../availability/Hemisphere'
-import { Month } from '../availability/Month'
+import { Hemisphere } from './Hemisphere'
+import { Month } from './Month'
 
 @ObjectType({ description: 'The months that a creature is available.' })
 export class AvailableMonth {
