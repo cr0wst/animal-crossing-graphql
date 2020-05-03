@@ -10,14 +10,19 @@ import { Shop } from './enums/Shop'
 export class AvailabilityArgs {
     @Field({ nullable: true })
     availableAllDay: boolean
+
     @Field(() => [String], { nullable: true })
     locations: string[]
+
     @Field(() => [String], { nullable: true })
     rarities: string[]
+
     @Field(() => [Month], { nullable: true })
     months: Month[]
+
     @Field(() => Hemisphere, { nullable: true })
     hemisphere: Hemisphere
+
     @Field({ nullable: true })
     availableAllYear: boolean
 }
