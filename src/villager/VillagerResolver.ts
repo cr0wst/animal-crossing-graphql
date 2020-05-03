@@ -38,7 +38,6 @@ export class VillagerResolver {
             })
         }
         if (gender !== undefined) {
-            console.log('Filtering Gender: ' + gender)
             results = results.filter((villager) => {
                 return villager.gender === gender
             })
