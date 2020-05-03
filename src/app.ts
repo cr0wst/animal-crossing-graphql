@@ -3,10 +3,12 @@ import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { VillagerResolver } from './villager/VillagerResolver'
 import { container } from './container'
+import { BugResolver } from './bug/BugResolver'
+import { AvailabilityResolver } from './common/AvailabilityResolver'
 
 async function main(): Promise<void> {
     const schema = await buildSchema({
-        resolvers: [VillagerResolver],
+        resolvers: [VillagerResolver, BugResolver, AvailabilityResolver],
         container: container,
         emitSchemaFile: true,
         validate: false,
@@ -14,7 +16,7 @@ async function main(): Promise<void> {
 
     const server = new ApolloServer({ schema })
     const { url } = await server.listen(process.env.PORT || 3000)
-    console.log(url)
+    console.log(`Listening on ${url}`)
 }
 
 main().catch((err) => {

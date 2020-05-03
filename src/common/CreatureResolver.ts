@@ -1,0 +1,170 @@
+import { Int, Field, InputType, FieldResolver, Root, Arg, Resolver } from 'type-graphql'
+import { injectable } from 'inversify'
+import { Hemisphere } from '../common/enums/Hemisphere'
+import { Month } from '../common/enums/Month'
+import Creature from './Creature'
+import { Price } from './Price'
+import { Shop } from './enums/Shop'
+
+@InputType()
+export class AvailabilityArgs {
+    @Field({ nullable: true })
+    availableAllDay: boolean
+    @Field(() => [String], { nullable: true })
+    locations: string[]
+    @Field(() => [String], { nullable: true })
+    rarities: string[]
+    @Field(() => [Month], { nullable: true })
+    months: Month[]
+    @Field(() => Hemisphere, { nullable: true })
+    hemisphere: Hemisphere
+}
+
+@InputType()
+export class PriceArgs {
+    @Field(() => Int, { nullable: true })
+    min: number
+
+    @Field(() => Int, { nullable: true })
+    max: number
+}
+
+@Resolver(() => Creature)
+@injectable()
+export abstract class CreatureResolver {
+    @FieldResolver(() => [Price])
+    prices(@Root() creature: Creature, @Arg('shop', () => Shop, { nullable: true }) shop: Shop): Price[] {
+        let filtered = creature.prices
+        if (shop !== undefined) {
+            filtered = filtered.filter((price) => price.shop === shop)
+        }
+
+        return filtered
+    }
+    protected filter(creatures: Creature[], price: PriceArgs, availability: AvailabilityArgs): Creature[] {
+        let results = creatures
+        if (availability !== undefined) {
+            results = this.filterAvailability(results, availability)
+        }
+
+        if (price !== undefined) {
+            results = this.filterPrice(results, price)
+        }
+
+        return results
+    }
+    protected filterExpiring(creatures: Creature[], month: Month, hemisphere: Hemisphere): Creature[] {
+        return creatures.filter((creature) => {
+            const monthAvailable = creature.availability.months.find((month) => {
+                return month.hemisphere === hemisphere
+            })
+
+            return (
+                // End month is this month and not available all year
+                !creature.availability.isAllYear &&
+                // Only available this month
+                month === monthAvailable.end
+            )
+        })
+    }
+
+    protected filterAvailability(results: Creature[], availability: AvailabilityArgs): Creature[] {
+        let filtered = results
+
+        if (availability.availableAllDay !== undefined) {
+            filtered = filtered.filter((result) => {
+                return result.availability.isAllDay == availability.availableAllDay
+            })
+        }
+
+        if (availability.locations) {
+            filtered = filtered.filter((result) => {
+                return availability.locations.includes(result.availability.location)
+            })
+        }
+
+        if (availability.rarities) {
+            filtered = filtered.filter((result) => {
+                return availability.rarities.includes(result.availability.rarity)
+            })
+        }
+
+        if (availability.months) {
+            filtered = filtered.filter((result) => {
+                if (result.availability.isAllYear) {
+                    return true
+                }
+                return (
+                    result.availability.months.filter((month) => {
+                        if (availability.hemisphere === undefined) {
+                            return (
+                                // Available in any of the months
+                                availability.months.filter((availability) =>
+                                    this.isMonthBetween(availability, month.start, month.end),
+                                ).length > 0
+                            )
+                        } else {
+                            return (
+                                // Same Hemisphere
+                                month.hemisphere === availability.hemisphere &&
+                                // Available in any of the months
+                                availability.months.filter((availability) =>
+                                    this.isMonthBetween(availability, month.start, month.end),
+                                ).length
+                            )
+                        }
+                    }).length > 0
+                )
+            })
+        }
+
+        return filtered
+    }
+
+    protected filterPrice(result: Creature[], priceArg: PriceArgs): Creature[] {
+        let filtered = result
+
+        if (priceArg.min !== undefined) {
+            filtered = filtered.filter((result) => {
+                return (
+                    result.prices.find((price) => {
+                        return price.price >= priceArg.min
+                    }) !== undefined
+                )
+            })
+        }
+
+        if (priceArg.max !== undefined) {
+            filtered = filtered.filter((result) => {
+                return (
+                    result.prices.find((price) => {
+                        return price.price <= priceArg.max
+                    }) !== undefined
+                )
+            })
+        }
+
+        return filtered
+    }
+
+    private isMonthBetween(month: number, start: number, end: number): boolean {
+        // First check to see if it's between the two numbers
+        // EX: Range 2-9 and month is 7
+        if (start <= month && month <= end && start <= end) {
+            return true
+        }
+
+        // If it's not between the two numbers then we check to see if it's in the boundary
+        // EX: Range 9-2 and month is 10 (End < Start)
+        if (month <= end && end <= start) {
+            return true
+        }
+
+        // EX: Range 9-2 and month is 1 (Start > End)
+        if (month >= start && end <= start) {
+            return true
+        }
+
+        return false
+    }
+}
