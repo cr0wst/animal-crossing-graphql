@@ -1,24 +1,21 @@
 import { injectable } from 'inversify'
 import { Shop } from '../creature/Shop'
-import { CreatureDataSource, CreatureResponse, CreatureData } from '../creature/CreatureDataSource'
+import { CreatureDataSource, CreatureResponse } from '../creature/CreatureDataSource'
 import { Shadow } from './Shadow'
+import Fish from './Fish'
 
 interface FishResponse extends CreatureResponse {
     'price-cj': number
     shadow: string
 }
 
-interface FishData extends CreatureData {
-    shadow: Shadow
-}
-
 @injectable()
-export class FishDataSource extends CreatureDataSource<FishResponse, FishData> {
+export class FishDataSource extends CreatureDataSource<FishResponse, Fish> {
     protected getEndpoint(): string {
         return 'fish'
     }
 
-    protected transformResponse(fish: FishResponse): FishData {
+    protected transformResponse(fish: FishResponse): Fish {
         const creatureData = this.buildBaseCreatureData(fish)
 
         creatureData.prices.push({

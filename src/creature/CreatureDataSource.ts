@@ -1,11 +1,10 @@
 import { injectable } from 'inversify'
-import { Availability } from '../availability/Availability'
-import { Price } from './Price'
 import { Month } from '../availability/Month'
 import { AvailableMonth } from '../availability/AvailableMonth'
 import { Hemisphere } from '../availability/Hemisphere'
 import { Shop } from './Shop'
 import { CacheableDataSource } from '../common/CacheableDataSource'
+import Creature from './Creature'
 
 export interface CreatureResponse {
     id: number
@@ -24,21 +23,12 @@ export interface CreatureResponse {
     'museum-phrase': string
 }
 
-export interface CreatureData {
-    id: number
-    name: string
-    availability: Availability
-    prices: Price[]
-    catchPhrase: string
-    museumDescription: string
-}
-
 @injectable()
-export abstract class CreatureDataSource<
-    R extends CreatureResponse,
-    D extends CreatureData
-> extends CacheableDataSource<R, D> {
-    protected buildBaseCreatureData(creature: CreatureResponse): CreatureData {
+export abstract class CreatureDataSource<R extends CreatureResponse, D extends Creature> extends CacheableDataSource<
+    R,
+    D
+> {
+    protected buildBaseCreatureData(creature: CreatureResponse): Creature {
         return {
             id: creature.id,
             name: creature.name['name-en'],
@@ -97,8 +87,4 @@ export abstract class CreatureDataSource<
                     .map((month): AvailableMonth => this.buildAvailableMonth('month-southern', month)),
             )
     }
-
-    protected abstract transformResponse(response: R): D
-
-    protected abstract getEndpoint(): string
 }
