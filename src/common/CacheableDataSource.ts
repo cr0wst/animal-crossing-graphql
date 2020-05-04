@@ -7,9 +7,11 @@ const API_URL = 'http://acnhapi.com/'
 export abstract class CacheableDataSource<R, D extends { id: number }> {
     private cache: D[]
 
+    protected abstract readonly endpoint: string
+
     async getAll(): Promise<D[]> {
         if (!this.cache) {
-            const response = await axios.get(`${API_URL + this.getEndpoint()}`)
+            const response = await axios.get(`${API_URL + this.endpoint}`)
 
             // ACNH API returns an object of key-value pairs instead of an array.
             this.cache = Object.values(response.data).map((response: R) => {
@@ -25,6 +27,4 @@ export abstract class CacheableDataSource<R, D extends { id: number }> {
     }
 
     protected abstract transformResponse(response: R): D
-
-    protected abstract getEndpoint(): string
 }

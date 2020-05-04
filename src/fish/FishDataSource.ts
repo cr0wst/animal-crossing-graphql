@@ -11,9 +11,7 @@ interface FishResponse extends CreatureResponse {
 
 @injectable()
 export class FishDataSource extends CreatureDataSource<FishResponse, Fish> {
-    protected getEndpoint(): string {
-        return 'fish'
-    }
+    protected readonly endpoint = 'fish'
 
     protected transformResponse(fish: FishResponse): Fish {
         const creatureData = this.buildBaseCreatureData(fish)

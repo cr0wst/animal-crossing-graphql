@@ -9,9 +9,7 @@ interface BugResponse extends CreatureResponse {
 
 @injectable()
 export class BugDataSource extends CreatureDataSource<BugResponse, Bug> {
-    protected getEndpoint(): string {
-        return 'bugs'
-    }
+    protected readonly endpoint = 'bugs'
 
     protected transformResponse(bug: BugResponse): Bug {
         const creatureData = this.buildBaseCreatureData(bug)

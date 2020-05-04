@@ -26,9 +26,7 @@ interface VillagerData {
 
 @injectable()
 export class VillagerDataSource extends CacheableDataSource<VillagerResponse, VillagerData> {
-    protected getEndpoint(): string {
-        return 'villagers'
-    }
+    protected readonly endpoint = 'villagers'
 
     protected transformResponse(villager: VillagerResponse): VillagerData {
         return {
