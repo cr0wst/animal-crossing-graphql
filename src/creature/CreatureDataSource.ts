@@ -1,5 +1,4 @@
 import { injectable } from 'inversify'
-import axios from 'axios'
 import { Availability } from '../availability/Availability'
 import { Price } from './Price'
 import { Month } from '../availability/Month'
@@ -7,8 +6,6 @@ import { AvailableMonth } from '../availability/AvailableMonth'
 import { Hemisphere } from '../availability/Hemisphere'
 import { Shop } from './Shop'
 import { CacheableDataSource } from '../common/CacheableDataSource'
-
-const API_URL = 'http://acnhapi.com/'
 
 export interface CreatureResponse {
     id: number
