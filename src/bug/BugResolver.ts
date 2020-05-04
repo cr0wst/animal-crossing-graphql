@@ -17,7 +17,7 @@ class GetBugsArgs {
 
 @Resolver()
 @injectable()
-export class BugResolver extends CreatureResolver {
+export class BugResolver extends CreatureResolver<Bug> {
     constructor(readonly bugDataSource: BugDataSource) {
         super()
     }

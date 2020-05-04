@@ -41,10 +41,10 @@ export class PriceArgs {
 
 @Resolver(() => Creature)
 @injectable()
-export abstract class CreatureResolver {
+export abstract class CreatureResolver<C extends Creature> {
     @FieldResolver(() => [Price])
     async prices(
-        @Root() creature: Creature,
+        @Root() creature: C,
         @Arg('shop', () => Shop, { nullable: true, description: 'The shop to display results for.' }) shop: Shop,
     ): Promise<Price[]> {
         let filtered = creature.prices
@@ -54,7 +54,7 @@ export abstract class CreatureResolver {
         return filtered
     }
 
-    protected filter(creatures: Creature[], price: PriceArgs, availability: AvailabilityArgs): Creature[] {
+    protected filter(creatures: C[], price: PriceArgs, availability: AvailabilityArgs): C[] {
         let results = creatures
         if (availability !== undefined) {
             results = this.filterAvailability(results, availability)
@@ -67,7 +67,7 @@ export abstract class CreatureResolver {
         return results
     }
 
-    protected filterExpiring(creatures: Creature[], month: Month, hemisphere: Hemisphere): Creature[] {
+    protected filterExpiring(creatures: C[], month: Month, hemisphere: Hemisphere): C[] {
         return creatures.filter((creature) => {
             const monthAvailable = creature.availability.months.find((month) => {
                 return month.hemisphere === hemisphere
@@ -82,7 +82,7 @@ export abstract class CreatureResolver {
         })
     }
 
-    protected filterAvailability(results: Creature[], availability: AvailabilityArgs): Creature[] {
+    protected filterAvailability(results: C[], availability: AvailabilityArgs): C[] {
         let filtered = results
 
         if (availability.availableAllDay !== undefined) {
@@ -130,7 +130,7 @@ export abstract class CreatureResolver {
         return filtered
     }
 
-    protected filterPrice(result: Creature[], priceArg: PriceArgs): Creature[] {
+    protected filterPrice(result: C[], priceArg: PriceArgs): C[] {
         let filtered = result
 
         if (priceArg.min !== undefined) {

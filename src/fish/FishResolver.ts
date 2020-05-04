@@ -17,7 +17,7 @@ class GetFishArgs {
 
 @Resolver()
 @injectable()
-export class FishResolver extends CreatureResolver {
+export class FishResolver extends CreatureResolver<Fish> {
     constructor(readonly fishDataSource: FishDataSource) {
         super()
     }
