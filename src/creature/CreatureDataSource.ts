@@ -51,7 +51,7 @@ export abstract class CreatureDataSource<R extends CreatureResponse, D extends C
         }
     }
 
-    protected buildAvailableMonth(hemisphere: string, month: string): AvailableMonth {
+    private buildAvailableMonth(hemisphere: string, month: string): AvailableMonth {
         const start = Month[Month[+month.split('-')[0] - 1]]
         const end = Month[Month[+month.split('-')[1] - 1]] ?? start
         return {
@@ -61,7 +61,7 @@ export abstract class CreatureDataSource<R extends CreatureResponse, D extends C
         }
     }
 
-    protected buildAvailableMonths(creature: CreatureResponse): AvailableMonth[] {
+    private buildAvailableMonths(creature: CreatureResponse): AvailableMonth[] {
         if (creature.availability.isAllYear) {
             return [
                 {
