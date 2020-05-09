@@ -13,6 +13,9 @@ class GetFishArgs {
 
     @Field(() => PriceArgs, { nullable: true })
     price?: PriceArgs
+
+    @Field(() => String, { nullable: true })
+    name?: string
 }
 
 @Resolver()
@@ -23,10 +26,10 @@ export class FishResolver extends CreatureResolver<Fish> {
     }
 
     @Query(() => [Fish], { description: 'Query for a list of fishes.' })
-    async fishes(@Args() { availability, price }: GetFishArgs): Promise<Fish[]> {
+    async fishes(@Args() { availability, price, name }: GetFishArgs): Promise<Fish[]> {
         const results = await this.fishDataSource.getAll()
 
-        return this.filter(results, price, availability)
+        return this.filter(results, price, availability, name)
     }
 
     @Query(() => Fish, { description: 'Query for a single fish.' })

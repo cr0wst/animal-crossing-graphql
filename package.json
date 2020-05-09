@@ -8,7 +8,7 @@
     "test": "jest",
     "build": "tsc --sourceMap false",
     "lint": "eslint -c '.eslintrc.js' 'src/**/*.{js,ts,tsx}' 'test/**/*.{js,ts,tsx}' --quiet --fix",
-    "start:watch": "ts-node-dev --respawn --transpileOnly src/app.ts"
+    "start:watch": "ts-node-dev --respawn --poll --interval 1000 --transpileOnly src/app.ts"
   },
   "keywords": [],
   "author": "Steve Crow <steve@smcrow.net>",

@@ -13,6 +13,9 @@ class GetBugsArgs {
 
     @Field(() => PriceArgs, { nullable: true })
     price?: PriceArgs
+
+    @Field(() => String, { nullable: true })
+    name?: string
 }
 
 @Resolver()
@@ -23,10 +26,10 @@ export class BugResolver extends CreatureResolver<Bug> {
     }
 
     @Query(() => [Bug], { description: 'Query for a list of bugs.' })
-    async bugs(@Args() { availability, price }: GetBugsArgs): Promise<Bug[]> {
+    async bugs(@Args() { availability, price, name }: GetBugsArgs): Promise<Bug[]> {
         const results = await this.bugDataSource.getAll()
 
-        return this.filter(results, price, availability)
+        return this.filter(results, price, availability, name)
     }
 
     @Query(() => Bug, { description: 'Query for a single bug.' })

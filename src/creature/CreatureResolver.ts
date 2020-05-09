@@ -54,7 +54,7 @@ export abstract class CreatureResolver<C extends Creature> {
         return filtered
     }
 
-    protected filter(creatures: C[], price: PriceArgs, availability: AvailabilityArgs): C[] {
+    protected filter(creatures: C[], price: PriceArgs, availability: AvailabilityArgs, name: string): C[] {
         let results = creatures
         if (availability !== undefined) {
             results = this.filterAvailability(results, availability)
@@ -62,6 +62,10 @@ export abstract class CreatureResolver<C extends Creature> {
 
         if (price !== undefined) {
             results = this.filterPrice(results, price)
+        }
+
+        if (name !== undefined) {
+            results = results.filter((creature) => creature.name.startsWith(name))
         }
 
         return results

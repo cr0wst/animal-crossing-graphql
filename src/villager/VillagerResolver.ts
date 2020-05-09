@@ -16,6 +16,9 @@ class GetVillagerArgs {
 
     @Field(() => Gender, { nullable: true, description: 'The gender of the villagers to filter by.' })
     gender: Gender
+
+    @Field(() => String, { nullable: true })
+    name?: string
 }
 
 @Resolver()
@@ -24,7 +27,7 @@ export class VillagerResolver {
     constructor(readonly villagerDataSource: VillagerDataSource) {}
 
     @Query(() => [Villager], { description: 'Query for a list of villagers.' })
-    async villagers(@Args() { personality, species, gender }: GetVillagerArgs): Promise<Villager[]> {
+    async villagers(@Args() { personality, species, gender, name }: GetVillagerArgs): Promise<Villager[]> {
         let results = await this.villagerDataSource.getAll()
 
         if (personality) {
@@ -41,6 +44,9 @@ export class VillagerResolver {
             results = results.filter((villager) => {
                 return villager.gender === gender
             })
+        }
+        if (name !== undefined) {
+            results = results.filter((villager) => villager.name.startsWith(name))
         }
 
         return results
